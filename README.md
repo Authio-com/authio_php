@@ -10,6 +10,18 @@
 Authio PHP SDK. Verifies session JWTs against Authio's JWKS and kicks off
 magic-link sign-in flows.
 
+## What's new — 2026-05-23 WorkOS-parity sprint
+
+The Authio API gained four new product surfaces
+([`authio_proto`](https://github.com/authio-com/authio_proto)). The PHP gem verifies the new JWT shape
+unchanged (`$claims['roles']`, `$claims['permissions']` on every
+customer session). Reference docs:
+
+- Embeddable widgets — [docs.authio.com/widgets/overview](https://docs.authio.com/widgets/overview)
+- Synchronous Actions — [docs.authio.com/actions/overview](https://docs.authio.com/actions/overview)
+- DCR / CIMD / MCP — [docs.authio.com/concepts/dynamic-client-registration](https://docs.authio.com/concepts/dynamic-client-registration)
+- Roles + permissions — [docs.authio.com/concepts/roles-and-permissions](https://docs.authio.com/concepts/roles-and-permissions)
+
 ## Install
 
 ```bash
