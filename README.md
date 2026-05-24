@@ -7,6 +7,10 @@
 
 # authio/authio (PHP)
 
+> Part of **[Authio Lobby](https://authio.com/products/lobby)** —
+> Authio's drop-in passwordless authentication. Learn more at
+> https://authio.com/products/lobby.
+
 Authio PHP SDK. Verifies session JWTs against Authio's JWKS and kicks off
 magic-link sign-in flows.
 
