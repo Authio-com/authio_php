@@ -1,0 +1,35 @@
+name: publish
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+# Notify Packagist to crawl the repo after a tag push. Packagist reads
+# versions from Git tags; no artifact upload. Upload is gated on
+# PACKAGIST_TOKEN so tag pushes still validate before the secret exists.
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      PACKAGIST_TOKEN: ${{ secrets.PACKAGIST_TOKEN }}
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - name: Update Packagist
+        if: env.PACKAGIST_TOKEN != ''
+        env:
+          PACKAGIST_USERNAME: authio
+          PACKAGIST_REPO_URL: https://github.com/authio-com/authio_php
+        run: |
+          curl -fsS -X POST \
+            -H 'content-type: application/json' \
+            "https://packagist.org/api/update-package?username=${PACKAGIST_USERNAME}&apiToken=${PACKAGIST_TOKEN}" \
+            -d "{\"repository\":{\"url\":\"${PACKAGIST_REPO_URL}\"}}"
+      - name: Skip publish (no PACKAGIST_TOKEN secret)
+        if: env.PACKAGIST_TOKEN == ''
+        run: |
+          echo "::notice::PACKAGIST_TOKEN secret is not set; skipping Packagist update."
+          echo "Set PACKAGIST_TOKEN in Settings → Secrets → Actions, then re-tag to release."
