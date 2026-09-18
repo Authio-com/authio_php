@@ -31,6 +31,7 @@ final class Authio
      *   publishable_key?: string,
      *   issuer?: string,
      *   audience?: string,
+     *   project_id?: string,
      *   http_client?: HttpClient
      * } $options
      */
@@ -42,11 +43,16 @@ final class Authio
         $this->issuer = (string) ($options['issuer'] ?? $this->apiUrl);
         $this->audience = (string) ($options['audience'] ?? 'authio');
         $this->http = $options['http_client'] ?? new HttpClient(['timeout' => 30.0]);
+        // Tenant binding, defaulting from the env var the docs already ask
+        // for. Without it, a token minted in ANY Authio project verifies
+        // here — see JwksVerifier::assertTenant.
+        $projectId = (string) ($options['project_id'] ?? getenv('AUTHIO_PROJECT_ID') ?: '');
         $this->verifier = new JwksVerifier(
             $this->apiUrl,
             $this->issuer,
             $this->audience,
             $this->http,
+            $projectId !== '' ? $projectId : null,
         );
     }
 
