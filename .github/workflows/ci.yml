@@ -25,6 +25,6 @@ jobs:
       - uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-php-${{ matrix.php-version }}-${{ hashFiles('**/composer.json') }}
+          key: ${{ runner.os }}-php-${{ matrix.php-version }}-${{ hashFiles('**/composer.json', '**/composer.lock') }}
       - run: composer install --prefer-dist --no-progress
       - run: vendor/bin/phpunit
