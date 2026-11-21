@@ -1,0 +1,22 @@
+# TEMPORARY: generates composer.lock on PHP 8.2 (lowest supported) so it can
+# be committed. Removed again before merge.
+name: gen-lock
+on:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  lock:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc # v2.32.0
+        with:
+          php-version: "8.2"
+          extensions: openssl, json, mbstring
+          coverage: none
+      - run: composer update --no-install --no-progress
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: composer-lock
+          path: composer.lock
